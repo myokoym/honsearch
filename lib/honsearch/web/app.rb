@@ -220,7 +220,7 @@ module Honsearch
         end
 
         def page_title
-          title = "Honsearch 青空文庫全文検索"
+          title = "Honsearch 書誌情報検索"
           if params[:word]
             title = "#{params[:word]}#{params_to_description} - #{title}"
           end
