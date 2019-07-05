@@ -16,6 +16,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
+require "openbd"
 require "csv"
 require "nkf"
 require "nokogiri"
@@ -28,15 +29,20 @@ module Honsearch
   class Loader
     def load(options={})
       books = []
-      Zip::File.open("aozorabunko/index_pages/list_person_all_extended_utf8.zip") do |zip_file|
-        entry = zip_file.glob("*.csv").first
-        authors_csv = entry.get_input_stream.read
-        authors_csv.force_encoding(Encoding::UTF_8)
-        CSV.new(authors_csv,
-                headers: true,
-                converters: nil).each do |row|
-          books << Book.new(row)
-        end
+      client = Openbd::Client.new
+      #isbns = client.coverage
+      #File.open("isbns.json", "w") do |file|
+      #  JSON.dump(isbns, file)
+      #end
+      #books = client.get(isbns.last(2))
+      #File.open("books.json", "w") do |file|
+      #  JSON.dump(books, file)
+      #end
+      isbns = JSON.parse(File.read("isbns.json"))
+      src_books = JSON.parse(File.read("books.json"))
+      src_books.each do |book|
+        onix = book["onix"]
+        books << Book.parse_from_onix(onix)
       end
 
       load_proc = lambda do |book|
@@ -57,76 +63,98 @@ module Honsearch
         return if updated_date < options[:diff]
       end
 
-      author = Groonga["Authors"][book.author_id]
-      unless author
-        author = Groonga["Authors"].add(
-          book.author_id,
-          name: book.author_name
-        )
-      end
-
-      path = book.html_url.scan(/\/cards\/.*/).first
-      return unless path
-      puts "#{book.name} - #{book.author_name}"
-      html = File.read(File.join("aozorabunko", path))
-      encoding = NKF.guess(html).to_s
-      doc = Nokogiri::HTML.parse(html, nil, encoding)
-      title = book.title
-      unless book.subtitle.empty?
-        title += " #{book.subtitle}"
-      end
-      content = ""
-      main_text_nodes = doc.search("body .main_text").children
-      if main_text_nodes.empty?
-        main_text_nodes = doc.search("body").children
-      end
-      main_text_nodes.each do |node|
-        case node.node_name
-        when "text", "div"
-          content += node.text
-        when "ruby"
-          rb = node.at_xpath('.//rb')
-          if rb
-            content += rb.text
-          end
-        end
-      end
-      unless book.author_birthdate.empty?
-        age = book.author_birthdate.split(/-/).first
-        if /\A\d{1,3}\z/ =~ age
-          age = sprintf("%04d", age)
-        end
-        if age
-          age_group = age.sub(/\d\z/, "0")
-        elsif /紀元前/ =~ book.author_birthdate
-          age_group = "紀元前"
-        else
-          age_group = "????"
-        end
-      else
-        age_group = "????"
-      end
       if Groonga["Books"][book.id]
         authors = Groonga["Books"][book.id].authors
       else
         authors = []
       end
-      authors << author
+      book.author_names.each do |author_name|
+        author = Groonga["Authors"][author_name]
+        unless author
+          author = Groonga["Authors"].add(
+            author_name,
+            name: author_name
+          )
+        end
+        authors << author
+      end
+      if book.imprint_name
+        imprint = Groonga["Imprints"][book.imprint_name]
+        unless imprint
+          imprint = Groonga["Imprints"].add(
+            book.imprint_name,
+            name: book.imprint_name
+          )
+        end
+      end
+      if book.publisher_name
+        publisher = Groonga["Publishers"][book.publisher_name]
+        unless publisher
+          publisher = Groonga["Publishers"].add(
+            book.publisher_name,
+            name: book.publisher_name
+          )
+        end
+      end
+
+      #path = book.html_url.scan(/\/cards\/.*/).first
+      #return unless path
+      puts "#{book.title} - #{book.author_names}"
+      #html = File.read(File.join("aozorabunko", path))
+      #encoding = NKF.guess(html).to_s
+      #doc = Nokogiri::HTML.parse(html, nil, encoding)
+      #title = book.title
+      #unless book.subtitle.empty?
+      #  title += " #{book.subtitle}"
+      #end
+      #content = ""
+      #main_text_nodes = doc.search("body .main_text").children
+      #if main_text_nodes.empty?
+      #  main_text_nodes = doc.search("body").children
+      #end
+      #main_text_nodes.each do |node|
+      #  case node.node_name
+      #  when "text", "div"
+      #    content += node.text
+      #  when "ruby"
+      #    rb = node.at_xpath('.//rb')
+      #    if rb
+      #      content += rb.text
+      #    end
+      #  end
+      #end
+      #unless book.author_birthdate.empty?
+      #  age = book.author_birthdate.split(/-/).first
+      #  if /\A\d{1,3}\z/ =~ age
+      #    age = sprintf("%04d", age)
+      #  end
+      #  if age
+      #    age_group = age.sub(/\d\z/, "0")
+      #  elsif /紀元前/ =~ book.author_birthdate
+      #    age_group = "紀元前"
+      #  else
+      #    age_group = "????"
+      #  end
+      #else
+      #  age_group = "????"
+      #end
       Groonga["Books"].add(
         book.id,
-        title: title,
-        content: content,
+        title: book.title,
+        content: book.content,
         authors: authors.uniq,
-        card_url: book.card_url,
-        html_url: book.html_url,
-        orthography: book.orthography,
-        copyrighted: book.copyrighted,
-        ndc: book.ndc,
-        ndc1: book.ndc1,
-        ndc2: book.ndc2,
-        ndc3: book.ndc3,
-        age_group: age_group,
-        kids: book.kids?,
+        imprint: imprint,
+        publisher: publisher,
+        #card_url: book.card_url,
+        #html_url: book.html_url,
+        #orthography: book.orthography,
+        #copyrighted: book.copyrighted,
+        #ndc: book.ndc,
+        #ndc1: book.ndc1,
+        #ndc2: book.ndc2,
+        #ndc3: book.ndc3,
+        #age_group: age_group,
+        #kids: book.kids?,
       )
     end
   end

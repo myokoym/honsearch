@@ -61,6 +61,12 @@ module Honsearch
         if options[:author_id]
           conditions << (record.authors =~ options[:author_id])
         end
+        if options[:imprint]
+          conditions << (record.imprint._key == options[:imprint])
+        end
+        if options[:publisher]
+          conditions << (record.publisher._key == options[:publisher])
+        end
         if options[:orthography]
           conditions << (record.orthography._key == options[:orthography])
         end

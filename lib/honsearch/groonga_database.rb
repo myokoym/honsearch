@@ -91,6 +91,14 @@ module Honsearch
       @authors ||= Groonga["Authors"]
     end
 
+    def imprints
+      @imprints ||= Groonga["Imprints"]
+    end
+
+    def publishers
+      @publishers ||= Groonga["Publishers"]
+    end
+
     def books
       @books ||= Groonga["Books"]
     end
@@ -117,6 +125,15 @@ module Honsearch
           table.short_text("name")
         end
 
+        schema.create_table("Imprints",
+                            :type => :hash) do |table|
+          table.short_text("name")
+        end
+        schema.create_table("Publishers",
+                            :type => :hash) do |table|
+          table.short_text("name")
+        end
+
         schema.create_table("Orthographies",
                             :type => :hash) do |table|
         end
@@ -139,9 +156,8 @@ module Honsearch
           table.short_text("title")
           table.text("content")
           table.reference("authors", "Authors", type: :vector)
-          table.short_text("card_url")
-          table.short_text("html_url")
-          table.reference("orthography", "Orthographies")
+          table.reference("imprint", "Imprints")
+          table.reference("publisher", "Publishers")
           table.reference("copyrighted", "CopyrightedFlags")
           table.reference("ndc", "NdcMaster", type: :vector)
           table.reference("ndc1", "NdcMaster", type: :vector)
@@ -158,6 +174,7 @@ module Honsearch
           table.index("Books.title")
           table.index("Books.content")
           table.index("Authors.name")
+          table.index("Publishers.name")
         end
 
         schema.change_table("Authors") do |table|
