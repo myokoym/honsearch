@@ -1,0 +1,36 @@
+- if params["ndc3"] || params["ndc"]
+  - @books.group("ndc").sort([["_key"]]).each do |ndc|
+    - next unless /#{params["ndc3"]}/ =~ ndc._key
+    = link_to("NDC #{ndc._key} #{ndc.label} (#{ndc.n_sub_records})", url(["/search", drilled_params(ndc: ndc._key)].join("?")))
+    %br
+- elsif params["ndc2"]
+  - @books.group("ndc3").sort([["_key"]]).each do |ndc3|
+    - next unless params["ndc2"][0..1] == ndc3._key[0..1]
+    = link_to("NDC #{ndc3._key} #{ndc3.label} (#{ndc3.n_sub_records})", url(["/search", drilled_params(ndc3: ndc3._key)].join("?")))
+    %br
+- elsif params["ndc1"]
+  - @books.group("ndc2").sort([["_key"]]).each do |ndc2|
+    - next unless params["ndc1"][0] == ndc2._key[0]
+    = link_to("NDC #{ndc2._key} #{ndc2.label} (#{ndc2.n_sub_records})", url(["/search", drilled_params(ndc2: ndc2._key)].join("?")))
+    %br
+- else
+  - @books.group("ndc1").sort([["_key"]]).each do |ndc1|
+    = link_to("NDC #{ndc1._key} #{ndc1.label} (#{ndc1.n_sub_records})", url(["/search", drilled_params(ndc1: ndc1._key)].join("?")))
+    %br
+%br
+- @books.group("kids").each do |kids|
+  - if kids._key
+    = link_to("児童書 (#{kids.n_sub_records})", url(["/search", drilled_params(kids: kids._key)].join("?")))
+    %br
+    %br
+- @books.group("orthography").each do |orthography|
+  = link_to("#{orthography._key} (#{orthography.n_sub_records})", url(["/search", drilled_params(orthography: orthography._key)].join("?")))
+  %br
+%br
+- @books.group("copyrighted").each do |copyrighted|
+  = link_to("著作権#{copyrighted._key} (#{copyrighted.n_sub_records})", url(["/search", drilled_params(copyrighted: copyrighted._key)].join("?")))
+  %br
+%br
+- @books.group("age_group").sort([["_key"]]).each do |age_group|
+  = link_to("#{age_group._key.sub(/\A0+/, "")}年代生まれ (#{age_group.n_sub_records})", url(["/search", drilled_params(age_group: age_group._key)].join("?")))
+  %br

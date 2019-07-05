@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "honsearch/command"
+
+Honsearch::Command.start

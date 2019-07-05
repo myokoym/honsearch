@@ -1,0 +1,28 @@
+- if url_for(only_path: true) != "/"
+  %p
+    [
+    = link_to("よくある質問", "#faq")
+    ]
+%p
+  = render :_search_form, layout: false
+- if @books
+  .row
+    .col-sm-7
+      = render :_books, layout: false
+    - unless @books.empty?
+      .col-sm-3
+        %p#conditions
+          = render :_conditions, layout: false
+      .col-sm-2
+        %p#authors
+          = render :_authors, layout: false
+%p
+  = render :_faq, layout: false
+%p
+  - if url_for(only_path: true) != "/"
+    [
+    = link_to("ページ上部に移動", "#")
+    ]
+  [
+  = link_to("類似文書検索", "#{@sub_url}similar")
+  ]

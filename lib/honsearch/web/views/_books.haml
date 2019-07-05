@@ -1,0 +1,29 @@
+%p= "「#{params[:word]}」で検索、 #{@paginated_books.n_records} 件ヒット [#{@paginated_books.start_offset}-#{@paginated_books.end_offset}件を表示]#{params_to_description}"
+- unless @books.empty?
+  %p.visible-xs
+    [
+    = link_to("NDC等で絞り込み", "#conditions")
+    ]
+    [
+    = link_to("著者で絞り込み", "#authors")
+    ]
+- if @paginated_books.total_pages > 1
+  = paginate(@paginated_books)
+%ul
+  - @paginated_books.each do |book|
+    %li
+      %h4
+        = link_to("#{book.title} - #{book.authors.map(&:name).join(" ")}", book.card_url)
+      - if params["word"] && book.content
+        %p
+          = @snippet.execute(book.content).collect {|snippet| "...#{snippet}..."}.join(" / ").html_safe
+      %p
+        [
+        = link_to("いますぐXHTML版で読む", book.html_url)
+        ]
+        [
+        = link_to("青空 in Browsersで縦書き表示", "http://aozora.binb.jp/reader/main.html?cid=#{book._key.to_i}")
+        ]
+      %br
+- if @paginated_books.total_pages > 1
+  = paginate(@paginated_books)
