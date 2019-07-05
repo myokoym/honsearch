@@ -58,7 +58,9 @@ module Honsearch
         isbn = onix["RecordReference"]
         book = self.new(isbn)
         book.title = onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["TitleText"]["content"]
-        book.subtitle = onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["Subtitle"]["content"]
+        if onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["Subtitle"]
+          book.subtitle = onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["Subtitle"]["content"]
+        end
         book.author_names = onix["DescriptiveDetail"]["Contributor"].map {|c| c["PersonName"]["content"].gsub(/\s/, "") }
         book.content = onix["CollateralDetail"]["TextContent"]
         book.imprint_name = onix["PublishingDetail"]["Imprint"]["ImprintName"]
