@@ -2,7 +2,7 @@
 - unless @books.empty?
   %p.visible-xs
     [
-    = link_to("NDC等で絞り込み", "#conditions")
+    = link_to("出版社で絞り込み", "#conditions")
     ]
     [
     = link_to("著者で絞り込み", "#authors")
@@ -13,16 +13,17 @@
   - @paginated_books.each do |book|
     %li
       %h4
-        = link_to("#{book.title} - #{book.authors.map(&:name).join(" ")}", book.card_url)
+        -# link_to("#{book.title} - #{book.authors.map(&:name).join(" ")}", book.card_url)
+        = "#{book.title} - #{book.authors.map(&:name).join(" ")}"
       - if params["word"] && book.content
         %p
           = @snippet.execute(book.content).collect {|snippet| "...#{snippet}..."}.join(" / ").html_safe
       %p
         [
-        = link_to("いますぐXHTML版で読む", book.html_url)
+        = link_to("hontoで探す", "https://honto.jp/netstore/search_10#{book._key.to_i}")
         ]
         [
-        = link_to("青空 in Browsersで縦書き表示", "http://aozora.binb.jp/reader/main.html?cid=#{book._key.to_i}")
+        = link_to("Amazonで探す", "https://www.amazon.co.jp/s?i=stripbooks&rh=p_66%3A#{book._key}")
         ]
       %br
 - if @paginated_books.total_pages > 1
