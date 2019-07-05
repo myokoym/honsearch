@@ -28,31 +28,37 @@ require "honsearch/book"
 module Honsearch
   class Loader
     def load(options={})
-      books = []
       client = Openbd::Client.new
       #isbns = client.coverage
       #File.open("isbns.json", "w") do |file|
       #  JSON.dump(isbns, file)
       #end
-      #books = client.get(isbns.last(2))
+      isbn_all = JSON.parse(File.read("isbns.json"))
+      #src_books = JSON.parse(File.read("books.json"))
+      #src_books = client.get(isbns.last(500))
       #File.open("books.json", "w") do |file|
-      #  JSON.dump(books, file)
+      #  JSON.dump(src_books, file)
       #end
-      isbns = JSON.parse(File.read("isbns.json"))
-      src_books = JSON.parse(File.read("books.json"))
-      src_books.each do |book|
-        onix = book["onix"]
-        books << Book.parse_from_onix(onix)
-      end
+      isbn_all.select {|isbn| isbn.start_with?("9784") }.each_slice(500) do |isbns|
+        books = []
+        client.get(isbns).each do |book|
+          onix = book["onix"]
+          begin
+            books << Book.parse_from_onix(onix)
+          rescue NoMethodError, TypeError
+          end
+        end
 
-      load_proc = lambda do |book|
-        load_book(book, options)
-      end
+        load_proc = lambda do |book|
+          load_book(book, options)
+        end
 
-      if options[:parallel]
-        Parallel.each(books, &load_proc)
-      else
-        books.each(&load_proc)
+        if options[:parallel]
+          Parallel.each(books, &load_proc)
+        else
+          books.each(&load_proc)
+        end
+        sleep 10
       end
     end
 
@@ -99,7 +105,7 @@ module Honsearch
 
       #path = book.html_url.scan(/\/cards\/.*/).first
       #return unless path
-      puts "#{book.title} - #{book.author_names}"
+      #puts "#{book.title} - #{book.author_names}"
       #html = File.read(File.join("aozorabunko", path))
       #encoding = NKF.guess(html).to_s
       #doc = Nokogiri::HTML.parse(html, nil, encoding)
