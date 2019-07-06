@@ -11,10 +11,6 @@ module Honsearch
       @author_names = []
     end
 
-    def kids?
-      @kids
-    end
-
     class << self
       def parse_from_onix(onix)
         isbn = onix["RecordReference"]
