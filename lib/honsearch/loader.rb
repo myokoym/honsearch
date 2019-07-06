@@ -39,13 +39,16 @@ module Honsearch
       #File.open("books.json", "w") do |file|
       #  JSON.dump(src_books, file)
       #end
-      isbn_all.select {|isbn| isbn.start_with?("9784") }.each_slice(500) do |isbns|
+      isbn_all.select {|isbn| isbn.start_with?("9784") }.reverse.each_slice(500) do |isbns|
         books = []
         client.get(isbns).each do |book|
           onix = book["onix"]
           begin
             books << Book.parse_from_onix(onix)
-          rescue NoMethodError, TypeError
+          rescue NoMethodError, TypeError => e
+            p book
+            puts e.message
+            puts e.backtrace
           end
         end
 
@@ -93,15 +96,15 @@ module Honsearch
           )
         end
       end
-      if book.publisher_name
-        publisher = Groonga["Publishers"][book.publisher_name]
-        unless publisher
-          publisher = Groonga["Publishers"].add(
-            book.publisher_name,
-            name: book.publisher_name
-          )
-        end
-      end
+      #if book.publisher_name
+      #  publisher = Groonga["Publishers"][book.publisher_name]
+      #  unless publisher
+      #    publisher = Groonga["Publishers"].add(
+      #      book.publisher_name,
+      #      name: book.publisher_name
+      #    )
+      #  end
+      #end
 
       #path = book.html_url.scan(/\/cards\/.*/).first
       #return unless path
@@ -150,7 +153,7 @@ module Honsearch
         content: book.content,
         authors: authors.uniq,
         imprint: imprint,
-        publisher: publisher,
+        #publisher: publisher,
         #card_url: book.card_url,
         #html_url: book.html_url,
         #orthography: book.orthography,

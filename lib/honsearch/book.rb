@@ -61,8 +61,15 @@ module Honsearch
         if onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["Subtitle"]
           book.subtitle = onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["Subtitle"]["content"]
         end
-        book.author_names = onix["DescriptiveDetail"]["Contributor"].map {|c| c["PersonName"]["content"].gsub(/\s/, "") }
-        book.content = onix["CollateralDetail"]["TextContent"]
+        if onix["DescriptiveDetail"]["Contributor"] &&
+           onix["DescriptiveDetail"]["Contributor"][0]["PersonName"]
+          book.author_names = onix["DescriptiveDetail"]["Contributor"].map {|c| c["PersonName"]["content"].gsub(/\s/, "") }
+        #else
+        #  p onix["DescriptiveDetail"]
+        end
+        if onix["CollateralDetail"]["TextContent"]
+          book.content = onix["CollateralDetail"]["TextContent"].map {|c| c["Text"] }.join("\n")
+        end
         book.imprint_name = onix["PublishingDetail"]["Imprint"]["ImprintName"]
         book.publisher_name = onix["PublishingDetail"]["Publisher"]
         book
