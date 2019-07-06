@@ -35,7 +35,7 @@ module Honsearch
       #File.open("books.json", "w") do |file|
       #  JSON.dump(src_books, file)
       #end
-      isbn_all.select {|isbn| isbn.start_with?("9784") }.reverse.each_slice(500) do |isbns|
+      isbn_all.select {|isbn| isbn.start_with?("9784") }.each_slice(500) do |isbns|
         books = []
         client.get(isbns).each do |openbd_book|
           begin
