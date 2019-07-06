@@ -21,7 +21,7 @@ module Honsearch
         end
         if onix["DescriptiveDetail"]["Contributor"] &&
            onix["DescriptiveDetail"]["Contributor"][0]["PersonName"]
-          book.author_names = onix["DescriptiveDetail"]["Contributor"].map {|c| c["PersonName"]["content"].gsub(/\s/, "") }
+          book.author_names = onix["DescriptiveDetail"]["Contributor"].map {|c| c["PersonName"]["content"].gsub(/\s　/, "") }
         #else
         #  p onix["DescriptiveDetail"]
         end
