@@ -68,7 +68,7 @@ module Honsearch
           conditions << (record.pubyear._key == options[:pubyear])
         end
         if options[:pubage]
-          conditions << (record.pubyear._key == options[:pubage])
+          conditions << (record.pubage._key == options[:pubage])
         end
         if options[:ccode1]
           conditions << (record.ccode1._key == options[:ccode1])
