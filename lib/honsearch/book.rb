@@ -74,6 +74,14 @@ module Honsearch
         book.publisher_name = onix["PublishingDetail"]["Publisher"]
         book
       end
+
+      def parse_from_summary(summary)
+        isbn = summary["isbn"]
+        book = self.new(isbn)
+        book.title = summary["title"]
+        book.imprint = summary["publisher"]
+        book.author = summary["author"] # TODO: multi author
+      end
     end
   end
 end
