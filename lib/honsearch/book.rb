@@ -60,6 +60,9 @@ module Honsearch
           if ccode
             book.ccode = ccode
             book.ccode1 = ccode[0]
+            if book.ccode1 == "4"
+              book.ccode1 == "8" # ISBN: 9784034396407
+            end
             book.ccode2 = ccode[1]
             book.ccode3 = ccode[2] + "0"
             book.ccode4 = ccode[2, 2]
