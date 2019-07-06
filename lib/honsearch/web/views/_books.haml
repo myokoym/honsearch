@@ -2,7 +2,10 @@
 - unless @books.empty?
   %p.visible-xs
     [
-    = link_to("出版社で絞り込み", "#conditions")
+    = link_to("出版社で絞り込み", "#publishers")
+    ]
+    [
+    = link_to("出版年で絞り込み", "#pubyear")
     ]
     [
     = link_to("著者で絞り込み", "#authors")

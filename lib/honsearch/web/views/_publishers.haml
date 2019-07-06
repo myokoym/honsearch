@@ -1,0 +1,4 @@
+%h4 出版社
+- grouping_by_publisher(@books).each do |publisher|
+  = link_to("#{publisher._key} (#{publisher.n_sub_records})", url(["/search", drilled_params(publisher: publisher._key)].join("?")))
+  %br
