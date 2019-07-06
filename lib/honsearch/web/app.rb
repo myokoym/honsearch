@@ -101,6 +101,7 @@ module Honsearch
           options[:author_id] = params[:author_id] if params[:author_id]
           options[:publisher] = params[:publisher] if params[:publisher]
           options[:pubyear] = params[:pubyear] if params[:pubyear]
+          options[:pubage] = params[:pubage] if params[:pubage]
 
           database = GroongaDatabase.new
           database.open(Command.new.database_dir)
@@ -134,6 +135,9 @@ module Honsearch
           if params[:pubyear]
             words << "出版年:#{params[:pubyear]}"
           end
+          if params[:pubage]
+            words << "出版年代:#{params[:pubage]}"
+          end
           if words.empty?
             ""
           else
@@ -156,6 +160,11 @@ module Honsearch
 
         def grouping_by_pubyear(table)
           key = "pubyear"
+          table.group(key).sort_by {|item| item._key }.reverse
+        end
+
+        def grouping_by_pubage(table)
+          key = "pubage"
           table.group(key).sort_by {|item| item._key }.reverse
         end
 

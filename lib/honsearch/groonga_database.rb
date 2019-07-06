@@ -103,6 +103,10 @@ module Honsearch
       @books ||= Groonga["Pubyears"]
     end
 
+    def pubages
+      @books ||= Groonga["Pubages"]
+    end
+
     def db_path
       @database.path
     end
@@ -134,6 +138,10 @@ module Honsearch
                             :type => :hash) do |table|
         end
 
+        schema.create_table("Pubages",
+                            :type => :hash) do |table|
+        end
+
         schema.create_table("Books",
                             :type => :hash) do |table|
           table.short_text("title")
@@ -141,6 +149,7 @@ module Honsearch
           table.reference("authors", "Authors", type: :vector)
           table.reference("publisher", "Publishers")
           table.reference("pubyear", "Pubyears")
+          table.reference("pubage", "Pubages")
         end
 
         schema.create_table("Terms",

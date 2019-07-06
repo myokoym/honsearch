@@ -7,6 +7,7 @@ module Honsearch
     attr_accessor :author_names
     attr_accessor :publisher_name
     attr_accessor :pubyear
+    attr_accessor :pubage
     def initialize(id)
       @id = id
       @author_names = []
@@ -41,6 +42,7 @@ module Honsearch
           end
           if /\A[12]\d{3}\z/ =~ year
             book.pubyear = year
+            book.pubage = "#{year[0, 3]}0"
           end
         end
         book

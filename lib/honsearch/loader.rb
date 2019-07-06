@@ -99,6 +99,14 @@ module Honsearch
           )
         end
       end
+      if book.pubage
+        pubage = Groonga["Pubages"][book.pubage]
+        unless pubage
+          pubyear = Groonga["Pubages"].add(
+            book.pubage,
+          )
+        end
+      end
 
       #path = book.html_url.scan(/\/cards\/.*/).first
       #return unless path
@@ -148,6 +156,7 @@ module Honsearch
         authors: authors.uniq,
         publisher: publisher,
         pubyear: pubyear,
+        pubage: pubage,
       )
     end
   end
