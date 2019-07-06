@@ -14,7 +14,8 @@
     %li
       %h4
         -# link_to("#{book.title} - #{book.authors.map(&:name).join(" ")}", book.card_url)
-        = "#{book.title} - #{book.authors.map(&:name).join(" ")}"
+        - authors = book.authors.map(&:name).join(" ")
+        = "#{book.title}#{' - ' unless authors.blank?}#{authors}"
       - if params["word"] && book.content
         %p
           = @snippet.execute(book.content).collect {|snippet| "...#{snippet}..."}.join(" / ").html_safe
