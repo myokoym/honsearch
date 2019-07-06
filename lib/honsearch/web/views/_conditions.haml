@@ -1,7 +1,3 @@
-- @books.group("imprint").sort_by {|item| item.n_sub_records }.reverse.each do |imprint|
-  = link_to("#{imprint._key} (#{imprint.n_sub_records})", url(["/search", drilled_params(imprint: imprint._key)].join("?")))
-  %br
-%br
--# @books.group("publisher").each do |publisher|
+- @books.group("publisher").each do |publisher|
   = link_to("#{publisher._key} (#{publisher.n_sub_records})", url(["/search", drilled_params(publisher: publisher._key)].join("?")))
   %br

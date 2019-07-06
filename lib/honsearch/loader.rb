@@ -87,24 +87,15 @@ module Honsearch
         end
         authors << author
       end
-      if book.imprint_name
-        imprint = Groonga["Imprints"][book.imprint_name]
-        unless imprint
-          imprint = Groonga["Imprints"].add(
-            book.imprint_name,
-            name: book.imprint_name
+      if book.publisher_name
+        publisher = Groonga["Publishers"][book.publisher_name]
+        unless publisher
+          publisher = Groonga["Publishers"].add(
+            book.publisher_name,
+            name: book.publisher_name
           )
         end
       end
-      #if book.publisher_name
-      #  publisher = Groonga["Publishers"][book.publisher_name]
-      #  unless publisher
-      #    publisher = Groonga["Publishers"].add(
-      #      book.publisher_name,
-      #      name: book.publisher_name
-      #    )
-      #  end
-      #end
 
       #path = book.html_url.scan(/\/cards\/.*/).first
       #return unless path
@@ -152,8 +143,7 @@ module Honsearch
         title: book.title,
         content: book.content,
         authors: authors.uniq,
-        imprint: imprint,
-        #publisher: publisher,
+        publisher: publisher,
         #card_url: book.card_url,
         #html_url: book.html_url,
         #orthography: book.orthography,

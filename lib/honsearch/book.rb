@@ -28,7 +28,6 @@ module Honsearch
     attr_accessor :html_updated_date
     attr_accessor :name
     attr_accessor :author_names
-    attr_accessor :imprint_name
     attr_accessor :publisher_name
     def initialize(id)
       @id = id
@@ -70,8 +69,7 @@ module Honsearch
         if onix["CollateralDetail"]["TextContent"]
           book.content = onix["CollateralDetail"]["TextContent"].map {|c| c["Text"] }.join("\n")
         end
-        book.imprint_name = onix["PublishingDetail"]["Imprint"]["ImprintName"]
-        book.publisher_name = onix["PublishingDetail"]["Publisher"]
+        book.publisher_name = onix["PublishingDetail"]["Imprint"]["ImprintName"]
         book
       end
 
@@ -79,7 +77,7 @@ module Honsearch
         isbn = summary["isbn"]
         book = self.new(isbn)
         book.title = summary["title"]
-        book.imprint = summary["publisher"]
+        book.publisher = summary["publisher"]
         book.author = summary["author"] # TODO: multi author
       end
     end

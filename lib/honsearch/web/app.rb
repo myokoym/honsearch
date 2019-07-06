@@ -99,7 +99,6 @@ module Honsearch
           end
           options ||= {}
           options[:author_id] = params[:author_id] if params[:author_id]
-          options[:imprint] = params[:imprint] if params[:imprint]
           options[:publisher] = params[:publisher] if params[:publisher]
           options[:orthography] = params[:orthography] if params[:orthography]
           options[:copyrighted] = params[:copyrighted] if params[:copyrighted]
