@@ -137,8 +137,13 @@ module Honsearch
           end
         end
 
-        def grouping(table)
+        def grouping_by_authors(table)
           key = "authors"
+          table.group(key).sort_by {|item| item.n_sub_records }.reverse
+        end
+
+        def grouping_by_publisher(table)
+          key = "publisher"
           table.group(key).sort_by {|item| item.n_sub_records }.reverse
         end
 
