@@ -109,12 +109,12 @@ module Honsearch
           page = (params[:page] || 1).to_i
           size = (params[:n_per_page] || 20).to_i
           begin
-            @paginated_books = @books.paginate([["_score", :desc]],
+            @paginated_books = @books.paginate([["_score", :desc], ["_id", :desc]],
                                                page: page,
                                                size: size)
           rescue Groonga::TooLargePage
             params.delete(:page)
-            @paginated_books = @books.paginate([["_score", :desc]],
+            @paginated_books = @books.paginate([["_score", :desc], ["_id", :desc]],
                                                page: 1,
                                                size: size)
           end
