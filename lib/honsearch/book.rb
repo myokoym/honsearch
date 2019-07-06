@@ -45,6 +45,9 @@ module Honsearch
           else
             year = pubdate[0, 4]
           end
+          if /\A210/ =~ year
+            year = "201#{year[3]}"
+          end
           if /\A[12]\d{3}\z/ =~ year
             book.pubyear = year
             book.pubage = "#{year[0, 3]}0"
