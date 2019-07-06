@@ -17,11 +17,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 require "openbd"
-require "csv"
-require "nkf"
-require "nokogiri"
 require "parallel"
-require "zip"
 require "honsearch/groonga_database"
 require "honsearch/book"
 
