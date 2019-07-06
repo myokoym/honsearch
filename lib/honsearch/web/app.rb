@@ -126,7 +126,10 @@ module Honsearch
         def params_to_description
           words = []
           if params[:author_id]
-            words << "著者ID:#{params[:author_id]}"
+            words << "著者:#{params[:author_id]}"
+          end
+          if params[:publisher]
+            words << "出版社:#{params[:publisher]}"
           end
           if params[:pubyear]
             words << "出版年:#{params[:pubyear]}"
