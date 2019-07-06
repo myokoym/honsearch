@@ -108,47 +108,6 @@ module Honsearch
         end
       end
 
-      #path = book.html_url.scan(/\/cards\/.*/).first
-      #return unless path
-      #puts "#{book.title} - #{book.author_names}"
-      #html = File.read(File.join("aozorabunko", path))
-      #encoding = NKF.guess(html).to_s
-      #doc = Nokogiri::HTML.parse(html, nil, encoding)
-      #title = book.title
-      #unless book.subtitle.empty?
-      #  title += " #{book.subtitle}"
-      #end
-      #content = ""
-      #main_text_nodes = doc.search("body .main_text").children
-      #if main_text_nodes.empty?
-      #  main_text_nodes = doc.search("body").children
-      #end
-      #main_text_nodes.each do |node|
-      #  case node.node_name
-      #  when "text", "div"
-      #    content += node.text
-      #  when "ruby"
-      #    rb = node.at_xpath('.//rb')
-      #    if rb
-      #      content += rb.text
-      #    end
-      #  end
-      #end
-      #unless book.author_birthdate.empty?
-      #  age = book.author_birthdate.split(/-/).first
-      #  if /\A\d{1,3}\z/ =~ age
-      #    age = sprintf("%04d", age)
-      #  end
-      #  if age
-      #    age_group = age.sub(/\d\z/, "0")
-      #  elsif /紀元前/ =~ book.author_birthdate
-      #    age_group = "紀元前"
-      #  else
-      #    age_group = "????"
-      #  end
-      #else
-      #  age_group = "????"
-      #end
       Groonga["Books"].add(
         book.id,
         title: book.title,
