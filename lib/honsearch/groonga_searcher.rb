@@ -64,27 +64,6 @@ module Honsearch
         if options[:publisher]
           conditions << (record.publisher._key == options[:publisher])
         end
-        if options[:orthography]
-          conditions << (record.orthography._key == options[:orthography])
-        end
-        if options[:copyrighted]
-          conditions << (record.copyrighted._key == options[:copyrighted])
-        end
-        if options[:ndc]
-          conditions << (record.ndc =~ options[:ndc])
-        elsif options[:ndc3]
-          conditions << (record.ndc3 =~ options[:ndc3])
-        elsif options[:ndc2]
-          conditions << (record.ndc2 =~ options[:ndc2])
-        elsif options[:ndc1]
-          conditions << (record.ndc1 =~ options[:ndc1])
-        end
-        if options[:age_group]
-          conditions << (record.age_group._key == options[:age_group])
-        end
-        if options[:kids]
-          conditions << (record.kids == options[:kids])
-        end
         unless words.empty?
           match_target = record.match_target do |match_record|
               (match_record.index('Terms.Books_title') * 10) |

@@ -144,16 +144,6 @@ module Honsearch
         content: book.content,
         authors: authors.uniq,
         publisher: publisher,
-        #card_url: book.card_url,
-        #html_url: book.html_url,
-        #orthography: book.orthography,
-        #copyrighted: book.copyrighted,
-        #ndc: book.ndc,
-        #ndc1: book.ndc1,
-        #ndc2: book.ndc2,
-        #ndc3: book.ndc3,
-        #age_group: age_group,
-        #kids: book.kids?,
       )
     end
   end

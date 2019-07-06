@@ -100,14 +100,6 @@ module Honsearch
           options ||= {}
           options[:author_id] = params[:author_id] if params[:author_id]
           options[:publisher] = params[:publisher] if params[:publisher]
-          options[:orthography] = params[:orthography] if params[:orthography]
-          options[:copyrighted] = params[:copyrighted] if params[:copyrighted]
-          options[:ndc1] = params[:ndc1] if params[:ndc1]
-          options[:ndc2] = params[:ndc2] if params[:ndc2]
-          options[:ndc3] = params[:ndc3] if params[:ndc3]
-          options[:ndc] = params[:ndc] if params[:ndc]
-          options[:age_group] = params[:age_group] if params[:age_group]
-          options[:kids] = params[:kids] if params[:kids]
 
           database = GroongaDatabase.new
           database.open(Command.new.database_dir)
@@ -134,21 +126,6 @@ module Honsearch
           words = []
           if params[:author_id]
             words << "著者ID:#{params[:author_id]}"
-          end
-          if params[:ndc] || params[:ndc3] || params[:ndc2] || params[:ndc1]
-            words << "NDC #{params[:ndc] || params[:ndc3] || params[:ndc2] || params[:ndc1]}"
-          end
-          if params[:kids]
-            words << "児童書"
-          end
-          if params[:age_group]
-            words << "#{params[:age_group].sub(/\A0+/, "")}年代生まれの作家"
-          end
-          if params[:orthography]
-            words << params[:orthography]
-          end
-          if params[:copyrighted]
-            words << "著作権#{params[:copyrighted]}"
           end
           if words.empty?
             ""

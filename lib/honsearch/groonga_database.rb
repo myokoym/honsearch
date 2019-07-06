@@ -126,36 +126,12 @@ module Honsearch
           table.short_text("name")
         end
 
-        schema.create_table("Orthographies",
-                            :type => :hash) do |table|
-        end
-
-        schema.create_table("CopyrightedFlags",
-                            :type => :hash) do |table|
-        end
-
-        schema.create_table("NdcMaster",
-                            :type => :hash) do |table|
-          table.short_text("label")
-        end
-
-        schema.create_table("AgeGroup",
-                            :type => :hash) do |table|
-        end
-
         schema.create_table("Books",
                             :type => :hash) do |table|
           table.short_text("title")
           table.text("content")
           table.reference("authors", "Authors", type: :vector)
           table.reference("publisher", "Publishers")
-          table.reference("copyrighted", "CopyrightedFlags")
-          table.reference("ndc", "NdcMaster", type: :vector)
-          table.reference("ndc1", "NdcMaster", type: :vector)
-          table.reference("ndc2", "NdcMaster", type: :vector)
-          table.reference("ndc3", "NdcMaster", type: :vector)
-          table.reference("age_group", "AgeGroup")
-          table.bool("kids")
         end
 
         schema.create_table("Terms",
