@@ -137,10 +137,10 @@ module Honsearch
             words << "出版社:#{params[:publisher]}"
           end
           if params[:pubyear]
-            words << "出版年:#{params[:pubyear]}"
+            words << "発行年:#{params[:pubyear]}"
           end
           if params[:pubage]
-            words << "出版年代:#{params[:pubage]}"
+            words << "発行年代:#{params[:pubage]}"
           end
           if params[:ccode1]
             words << "販売対象: #{params[:ccode1]}"

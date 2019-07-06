@@ -1,12 +1,13 @@
-%h4 販売対象
+%h4 Cコード
+%h5 販売対象
 - @books.group("ccode1").sort([["_key"]]).each do |ccode1|
   = link_to("#{ccode1._key} #{ccode1.label} (#{ccode1.n_sub_records})", url(["/search", drilled_params(ccode1: ccode1._key)].join("?")))
   %br
-%h4 形態
+%h5 形態
 - @books.group("ccode2").sort([["_key"]]).each do |ccode2|
   = link_to("#{ccode2._key} #{ccode2.label} (#{ccode2.n_sub_records})", url(["/search", drilled_params(ccode2: ccode2._key)].join("?")))
   %br
-%h4 内容
+%h5 内容
 - if params["ccode3"] || params["ccode4"]
   - @books.group("ccode4").sort([["_key"]]).each do |ccode4|
     - if params["ccode3"] && params["ccode3"][0] == ccode4._key[0]
