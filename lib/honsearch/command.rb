@@ -44,17 +44,26 @@ module Honsearch
 
     desc "load", "Load books."
     option :parallel, type: :boolean, desc: "run on multiple processes"
-    option :diff, type: :string, desc: "update only difference [YYYY-MM-DD]"
     def load
       GroongaDatabase.new.open(@database_dir) do |database|
-        #ndc_path = "data/ndc-simple.json"
-        #if !options[:diff] && File.file?(ndc_path)
-        #  File.open(ndc_path) do |file|
-        #    JSON.load(file).each do |id, label|
-        #      Groonga["NdcMaster"].add(id, label: label)
-        #    end
-        #  end
-        #end
+        ccode_path = "data/ccode.json"
+        if File.file?(ccode_path)
+          File.open(ccode_path) do |file|
+            json = JSON.load(file)
+            json["target"].each do |id, label|
+              Groonga["CCode1Master"].add(id, label: label)
+            end
+            json["format"].each do |id, label|
+              Groonga["CCode2Master"].add(id, label: label)
+            end
+            json["content3"].each do |id, label|
+              Groonga["CCode3Master"].add(id, label: label)
+            end
+            json["content4"].each do |id, label|
+              Groonga["CCode4Master"].add(id, label: label)
+            end
+          end
+        end
         Loader.new.load(options)
       end
     end

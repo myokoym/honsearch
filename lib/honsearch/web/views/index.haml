@@ -7,13 +7,15 @@
   = render :_search_form, layout: false
 - if @books
   .row
-    .col-sm-7
+    .col-sm-6
       = render :_books, layout: false
     - unless @books.empty?
       .col-sm-3
         %p#conditions
           = render :_conditions, layout: false
-      .col-sm-2
+      .col-sm-3
+        %p#ccode
+          = render :_ccode, layout: false
         %p#authors
           = render :_authors, layout: false
 %p

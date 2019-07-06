@@ -70,6 +70,17 @@ module Honsearch
         if options[:pubage]
           conditions << (record.pubyear._key == options[:pubage])
         end
+        if options[:ccode1]
+          conditions << (record.ccode1._key == options[:ccode1])
+        end
+        if options[:ccode2]
+          conditions << (record.ccode2._key == options[:ccode2])
+        end
+        if options[:ccode4]
+          conditions << (record.ccode4._key == options[:ccode4])
+        elsif options[:ccode3]
+          conditions << (record.ccode3._key == options[:ccode3])
+        end
         unless words.empty?
           match_target = record.match_target do |match_record|
               (match_record.index('Terms.Books_title') * 10) |

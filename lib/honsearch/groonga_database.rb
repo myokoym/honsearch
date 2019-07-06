@@ -142,6 +142,23 @@ module Honsearch
                             :type => :hash) do |table|
         end
 
+        schema.create_table("CCode1Master",
+                            :type => :hash) do |table|
+          table.short_text("label")
+        end
+        schema.create_table("CCode2Master",
+                            :type => :hash) do |table|
+          table.short_text("label")
+        end
+        schema.create_table("CCode3Master",
+                            :type => :hash) do |table|
+          table.short_text("label")
+        end
+        schema.create_table("CCode4Master",
+                            :type => :hash) do |table|
+          table.short_text("label")
+        end
+
         schema.create_table("Books",
                             :type => :hash) do |table|
           table.short_text("title")
@@ -150,6 +167,11 @@ module Honsearch
           table.reference("publisher", "Publishers")
           table.reference("pubyear", "Pubyears")
           table.reference("pubage", "Pubages")
+          table.short_text("ccode")
+          table.reference("ccode1", "CCode1Master")
+          table.reference("ccode2", "CCode2Master")
+          table.reference("ccode3", "CCode3Master")
+          table.reference("ccode4", "CCode4Master")
         end
 
         schema.create_table("Terms",

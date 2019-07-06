@@ -1,0 +1,16 @@
+- @books.group("ccode1").sort([["_key"]]).each do |ccode1|
+  = link_to("#{ccode1._key} #{ccode1.label} (#{ccode1.n_sub_records})", url(["/search", drilled_params(ccode1: ccode1._key)].join("?")))
+  %br
+%br
+- @books.group("ccode2").sort([["_key"]]).each do |ccode2|
+  = link_to("#{ccode2._key} #{ccode2.label} (#{ccode2.n_sub_records})", url(["/search", drilled_params(ccode2: ccode2._key)].join("?")))
+  %br
+%br
+- if params["ccode3"] || params["ccode4"]
+  - @books.group("ccode4").sort([["_key"]]).each do |ccode4|
+    - if params["ccode3"] && params["ccode3"][0] == ccode4._key[0]
+      = link_to("#{ccode4._key} #{ccode4.label} (#{ccode4.n_sub_records})", url(["/search", drilled_params(ccode4: ccode4._key)].join("?")))
+      %br
+  - @books.group("ccode3").sort([["_key"]]).each do |ccode3|
+    = link_to("#{ccode3._key} #{ccode3.label} (#{ccode3.n_sub_records})", url(["/search", drilled_params(ccode3: ccode3._key)].join("?")))
+    %br

@@ -102,6 +102,10 @@ module Honsearch
           options[:publisher] = params[:publisher] if params[:publisher]
           options[:pubyear] = params[:pubyear] if params[:pubyear]
           options[:pubage] = params[:pubage] if params[:pubage]
+          options[:ccode1] = params[:ccode1] if params[:ccode1]
+          options[:ccode2] = params[:ccode2] if params[:ccode2]
+          options[:ccode3] = params[:ccode3] if params[:ccode3]
+          options[:ccode4] = params[:ccode4] if params[:ccode4]
 
           database = GroongaDatabase.new
           database.open(Command.new.database_dir)
@@ -137,6 +141,15 @@ module Honsearch
           end
           if params[:pubage]
             words << "出版年代:#{params[:pubage]}"
+          end
+          if params[:ccode1]
+            words << "C-CODE-1: #{params[:ccode1]}"
+          end
+          if params[:ccode2]
+            words << "C-CODE-2: #{params[:ccode2]}"
+          end
+          if params[:ccode4] || params[:ccode3]
+            words << "C-CODE-3,4 #{params[:ccode4] || params[:ccode3]}"
           end
           if words.empty?
             ""

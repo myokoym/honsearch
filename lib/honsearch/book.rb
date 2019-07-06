@@ -8,6 +8,11 @@ module Honsearch
     attr_accessor :publisher_name
     attr_accessor :pubyear
     attr_accessor :pubage
+    attr_accessor :ccode
+    attr_accessor :ccode1
+    attr_accessor :ccode2
+    attr_accessor :ccode3
+    attr_accessor :ccode4
     def initialize(id)
       @id = id
       @author_names = []
@@ -45,6 +50,29 @@ module Honsearch
             book.pubage = "#{year[0, 3]}0"
           end
         end
+        if onix["DescriptiveDetail"]["Subject"]
+          ccode = onix["DescriptiveDetail"]["Subject"].select {|subject|
+            subject["SubjectSchemeIdentifier"] == "78"
+          }.first["SubjectCode"]
+          if ccode
+            book.ccode = ccode
+            book.ccode1 = ccode[0]
+            book.ccode2 = ccode[1]
+            book.ccode3 = ccode[2] + "0"
+            book.ccode4 = ccode[2, 2]
+          end
+          p ccode
+        else
+          p nil
+        end
+        #hanmoto = openbd_book["hanmoto"]
+        #ndc = hanmoto["ndccode"]
+        #book.ndc1 = ndc[-3] + "00"
+        #book.ndc2 = ndc[-3..-2] + "0"
+        #book.ndc3 = ndc[-3..-1]
+        #book.genrecodetrc = hanmoto["genrecodetrc"]
+        #book.genrecodetrcjidou = hanmoto["genrecodetrcjidou"]
+        #book.zasshicode = hanmoto["zasshicode"]
         book
       end
 
