@@ -143,13 +143,13 @@ module Honsearch
             words << "出版年代:#{params[:pubage]}"
           end
           if params[:ccode1]
-            words << "C-CODE-1: #{params[:ccode1]}"
+            words << "販売対象: #{params[:ccode1]}"
           end
           if params[:ccode2]
-            words << "C-CODE-2: #{params[:ccode2]}"
+            words << "形態:#{params[:ccode2]}"
           end
           if params[:ccode4] || params[:ccode3]
-            words << "C-CODE-3,4 #{params[:ccode4] || params[:ccode3]}"
+            words << "内容:#{params[:ccode4] || params[:ccode3]}"
           end
           if words.empty?
             ""
