@@ -11,10 +11,10 @@
       = render :_books, layout: false
     - unless @books.empty?
       .col-sm-3
-        %p#publishers
-          = render :_publishers, layout: false
         %p#pubyear
           = render :_pubyear, layout: false
+        %p#publishers
+          = render :_publishers, layout: false
       .col-sm-3
         %p#ccode
           = render :_ccode, layout: false
