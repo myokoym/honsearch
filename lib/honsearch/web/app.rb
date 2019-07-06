@@ -100,6 +100,7 @@ module Honsearch
           options ||= {}
           options[:author_id] = params[:author_id] if params[:author_id]
           options[:publisher] = params[:publisher] if params[:publisher]
+          options[:pubyear] = params[:pubyear] if params[:pubyear]
 
           database = GroongaDatabase.new
           database.open(Command.new.database_dir)
@@ -127,6 +128,9 @@ module Honsearch
           if params[:author_id]
             words << "著者ID:#{params[:author_id]}"
           end
+          if params[:pubyear]
+            words << "出版年:#{params[:pubyear]}"
+          end
           if words.empty?
             ""
           else
@@ -145,6 +149,11 @@ module Honsearch
         def grouping_by_publisher(table)
           key = "publisher"
           table.group(key).sort_by {|item| item.n_sub_records }.last(100).reverse
+        end
+
+        def grouping_by_pubyear(table)
+          key = "pubyear"
+          table.group(key).sort_by {|item| item._key }.reverse
         end
 
         def drilled_url(author)

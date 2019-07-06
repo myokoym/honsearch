@@ -1,3 +1,7 @@
 - grouping_by_publisher(@books).each do |publisher|
   = link_to("#{publisher._key} (#{publisher.n_sub_records})", url(["/search", drilled_params(publisher: publisher._key)].join("?")))
   %br
+%br
+- grouping_by_pubyear(@books).each do |pubyear|
+  = link_to("#{pubyear._key}年 (#{pubyear.n_sub_records})", url(["/search", drilled_params(pubyear: pubyear._key)].join("?")))
+  %br

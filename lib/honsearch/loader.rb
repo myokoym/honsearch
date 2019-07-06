@@ -37,12 +37,11 @@ module Honsearch
       #end
       isbn_all.select {|isbn| isbn.start_with?("9784") }.reverse.each_slice(500) do |isbns|
         books = []
-        client.get(isbns).each do |book|
-          onix = book["onix"]
+        client.get(isbns).each do |openbd_book|
           begin
-            books << Book.parse_from_onix(onix)
+            books << Book.parse_from_onix(openbd_book)
           rescue NoMethodError, TypeError => e
-            p book
+            p openbd_book
             puts e.message
             puts e.backtrace
           end
@@ -89,6 +88,14 @@ module Honsearch
           publisher = Groonga["Publishers"].add(
             book.publisher_name,
             name: book.publisher_name
+          )
+        end
+      end
+      if book.pubyear
+        pubyear = Groonga["Pubyears"][book.pubyear]
+        unless pubyear
+          pubyear = Groonga["Pubyears"].add(
+            book.pubyear,
           )
         end
       end
@@ -140,6 +147,7 @@ module Honsearch
         content: book.content,
         authors: authors.uniq,
         publisher: publisher,
+        pubyear: pubyear,
       )
     end
   end

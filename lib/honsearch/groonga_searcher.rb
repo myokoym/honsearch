@@ -64,6 +64,9 @@ module Honsearch
         if options[:publisher]
           conditions << (record.publisher._key == options[:publisher])
         end
+        if options[:pubyear]
+          conditions << (record.pubyear._key == options[:pubyear])
+        end
         unless words.empty?
           match_target = record.match_target do |match_record|
               (match_record.index('Terms.Books_title') * 10) |

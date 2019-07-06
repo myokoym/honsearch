@@ -6,13 +6,15 @@ module Honsearch
     attr_accessor :content
     attr_accessor :author_names
     attr_accessor :publisher_name
+    attr_accessor :pubyear
     def initialize(id)
       @id = id
       @author_names = []
     end
 
     class << self
-      def parse_from_onix(onix)
+      def parse_from_onix(openbd_book)
+        onix = openbd_book["onix"]
         isbn = onix["RecordReference"]
         book = self.new(isbn)
         book.title = onix["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["TitleText"]["content"]
@@ -29,6 +31,18 @@ module Honsearch
           book.content = onix["CollateralDetail"]["TextContent"].map {|c| c["Text"] }.join("\n")
         end
         book.publisher_name = onix["PublishingDetail"]["Imprint"]["ImprintName"]
+        summary = openbd_book["summary"]
+        unless summary["pubdate"].empty?
+          pubdate = summary["pubdate"].gsub(/[A-z]/, "")
+          if pubdate.include?("-")
+            year = pubdate.split("-")[0]
+          else
+            year = pubdate[0, 4]
+          end
+          if /\A[12]\d{3}\z/ =~ year
+            book.pubyear = year
+          end
+        end
         book
       end
 
