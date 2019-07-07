@@ -38,6 +38,7 @@ module Honsearch
         end
         book.publisher_name = onix["PublishingDetail"]["Imprint"]["ImprintName"]
         summary = openbd_book["summary"]
+        #p [summary["pubdate"], onix["PublishingDetail"]["PublishingDate"], openbd_book["hanmoto"]["dateshuppan"]]
         unless summary["pubdate"].empty?
           pubdate = summary["pubdate"].gsub(/[A-z]/, "")
           if pubdate.include?("-")
@@ -47,6 +48,8 @@ module Honsearch
           end
           if /\A210/ =~ year
             year = "201#{year[3]}"
+          elsif /\A1[0-5]/ =~ year
+            year = "20#{year[0, 2]}"
           end
           if /\A[12]\d{3}\z/ =~ year
             book.pubyear = year
