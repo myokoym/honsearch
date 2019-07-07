@@ -70,9 +70,6 @@ module Honsearch
             book.ccode3 = ccode[2] + "0"
             book.ccode4 = ccode[2, 2]
           end
-          p ccode
-        else
-          p nil
         end
         #hanmoto = openbd_book["hanmoto"]
         #ndc = hanmoto["ndccode"]
