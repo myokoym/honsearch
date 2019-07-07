@@ -7,10 +7,10 @@
   = render :_search_form, layout: false
 - if @books
   .row
-    .col-sm-6
+    .col-sm-7
       = render :_books, layout: false
     - unless @books.empty?
-      .col-sm-3
+      .col-sm-2
         %p#pubyear
           = render :_pubyear, layout: false
         %p#publishers
