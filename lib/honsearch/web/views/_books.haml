@@ -30,6 +30,9 @@
         = link_to("hontoで探す", "https://honto.jp/netstore/search_10#{book._key.to_i}")
         ]
         [
+        = link_to("紀伊國屋書店で探す", "https://www.kinokuniya.co.jp/disp/CSfDispListPage_001.jsp?qsd=true&ptk=01&gtin=#{book._key.to_i}")
+        ]
+        [
         = link_to("Amazonで探す", "https://www.amazon.co.jp/s?i=stripbooks&rh=p_66%3A#{book._key}")
         ]
       %br
