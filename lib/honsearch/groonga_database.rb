@@ -162,6 +162,7 @@ module Honsearch
         schema.create_table("Books",
                             :type => :hash) do |table|
           table.short_text("title")
+          table.short_text("subtitle")
           table.text("content")
           table.reference("authors", "Authors", type: :vector)
           table.reference("publisher", "Publishers")
@@ -179,6 +180,7 @@ module Honsearch
                             :normalizer => "NormalizerAuto",
                             :default_tokenizer => "TokenBigram") do |table|
           table.index("Books.title")
+          table.index("Books.subtitle")
           table.index("Books.content")
           table.index("Authors.name")
           table.index("Publishers.name")

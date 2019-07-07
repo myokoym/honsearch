@@ -111,6 +111,7 @@ module Honsearch
       Groonga["Books"].add(
         book.id,
         title: book.title,
+        subtitle: book.subtitle,
         content: book.content,
         authors: authors.uniq,
         publisher: publisher,
