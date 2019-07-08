@@ -229,20 +229,6 @@ module Honsearch
           snippet.execute(selected_books.first.content)
         end
 
-        def last_update_time
-          path = File.join(settings.root, "..", "..", "..", "aozorabunko")
-          if File.exist?(path)
-            File.mtime(path)
-          else
-            nil
-          end
-        end
-
-        def last_update_date
-          return unless last_update_time
-          last_update_time.strftime("%Y-%m-%d")
-        end
-
         def page_title
           title = "Honsearch 書誌情報検索"
           if params[:word]
