@@ -17,6 +17,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 require "honsearch"
+require "isbn"
 require "active_support/core_ext/hash"
 require "sinatra/base"
 require "sinatra/json"
@@ -159,6 +160,12 @@ module Honsearch
             end
             "（#{words.join}で絞り込み中）"
           end
+        end
+
+        def isbn10(isbn)
+          ISBN.ten(isbn)
+        rescue => e
+          puts e.to_s
         end
 
         def grouping_by_authors(table)
